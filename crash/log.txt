@@ -1,0 +1,52 @@
+2015-01-09 08:17:01.499 ResizingImageCrash[799:252117] Snapshotting a view that has not been rendered results in an empty snapshot. Ensure your view has been rendered at least once before snapshotting or snapshot after screen updates.
+2015-01-09 08:17:06.244 ResizingImageCrash[799:252117] image = <UIImage: 0x17ef71a0> size {640, 640} orientation 0 scale 1.000000, size = {640, 640}
+2015-01-09 08:17:06.826 ResizingImageCrash[799:252117] *** This application is not allowed to access Photo data. (
+	0   PhotoLibraryServices                0x304697ad <redacted> + 784
+	1   Photos                              0x2a592863 <redacted> + 62
+	2   libdispatch.dylib                   0x002039c7 _dispatch_client_callout + 22
+	3   libdispatch.dylib                   0x00204631 dispatch_once_f + 100
+	4   Photos                              0x2a59281f <redacted> + 122
+	5   Photos                              0x2a573391 <redacted> + 92
+	6   Photos                              0x2a587269 <redacted> + 160
+	7   libobjc.A.dylib                     0x350e7d5f <redacted> + 166
+	8   PhotoLibrary                        0x30391513 <redacted> + 62
+	9   PhotoLibrary                        0x303e0e9f <redacted> + 14
+	10  libsystem_blocks.dylib              0x35668ae1 _Block_release + 216
+	11  libdispatch.dylib                   0x00214a49 _dispatch_source_cancel_callout + 48
+	12  libdispatch.dylib                   0x002055bf _dispatch_source_invoke + 286
+	13  libdispatch.dylib                   0x0020721f _dispatch_main_queue_callback_4CF + 346
+	14  CoreFoundation                      0x278dd3b1 <redacted> + 8
+	15  CoreFoundation                      0x278dbab1 <redacted> + 1512
+	16  CoreFoundation                      0x278293c1 CFRunLoopRunSpecific + 476
+	17  CoreFoundation                      0x278291d3 CFRunLoopRunInMode + 106
+	18  GraphicsServices                    0x2ec270a9 GSEventRunModal + 136
+	19  UIKit                               0x2ae38fa1 UIApplicationMain + 1440
+	20  ResizingImageCrash                  0x000dba5d main + 116
+	21  libdyld.dylib                       0x3564daaf <redacted> + 2
+)
+(lldb) bt
+* thread #1: tid = 0x3d8d5, 0x350cdc64 libobjc.A.dylib`objc_exception_throw, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1
+    frame #0: 0x350cdc64 libobjc.A.dylib`objc_exception_throw
+    frame #1: 0x3046980a PhotoLibraryServices`-[PLPhotoLibrary initWithTransientContext:name:] + 878
+    frame #2: 0x2a592862 Photos`__30-[PHPhotoLibrary photoLibrary]_block_invoke + 62
+    frame #3: 0x002039c6 libdispatch.dylib`_dispatch_client_callout + 22
+    frame #4: 0x00204630 libdispatch.dylib`dispatch_once_f + 100
+    frame #5: 0x2a59281e Photos`-[PHPhotoLibrary photoLibrary] + 122
+    frame #6: 0x2a573390 Photos`-[PHCoreImageManager _cancelAndFlushPreheatItemsForAssets:domain:operation:passingTestHandler:] + 92
+    frame #7: 0x2a587268 Photos`-[PHImageManager dealloc] + 160
+    frame #8: 0x350e7d5e libobjc.A.dylib`objc_object::sidetable_release(bool) + 166
+    frame #9: 0x30391512 PhotoLibrary`-[PLPhotoTileViewController dealloc] + 62
+    frame #10: 0x303e0e9e PhotoLibrary`__destroy_helper_block_504 + 14
+    frame #11: 0x35668ae0 libsystem_blocks.dylib`_Block_release + 216
+    frame #12: 0x00214a48 libdispatch.dylib`_dispatch_source_cancel_callout + 48
+    frame #13: 0x00214a48 libdispatch.dylib`_dispatch_source_cancel_callout + 48
+    frame #14: 0x002055be libdispatch.dylib`_dispatch_source_invoke + 286
+    frame #15: 0x0020721e libdispatch.dylib`_dispatch_main_queue_callback_4CF + 346
+    frame #16: 0x278dd3b0 CoreFoundation`__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__ + 8
+    frame #17: 0x278dbab0 CoreFoundation`__CFRunLoopRun + 1512
+    frame #18: 0x278293c0 CoreFoundation`CFRunLoopRunSpecific + 476
+    frame #19: 0x278291d2 CoreFoundation`CFRunLoopRunInMode + 106
+    frame #20: 0x2ec270a8 GraphicsServices`GSEventRunModal + 136
+    frame #21: 0x2ae38fa0 UIKit`UIApplicationMain + 1440
+  * frame #22: 0x000dba5c ResizingImageCrash`main(argc=1, argv=0x001e4abc) + 116 at main.m:14
+(lldb) 
